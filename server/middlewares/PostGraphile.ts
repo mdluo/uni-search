@@ -3,6 +3,9 @@ import { postgraphql, makePluginHook } from 'postgraphile';
 import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector';
 import PgManyToManyPlugin from '@graphile-contrib/pg-many-to-many';
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import FulltextFilterPlugin from '@pyramation/postgraphile-plugin-fulltext-filter';
 import PgPubsub from '@graphile/pg-pubsub';
 // import { NodePlugin } from 'graphile-build';
 import { decode } from 'next-auth/jwt';
@@ -51,6 +54,7 @@ const middleware = postgraphql(authPgPool, 'app_public', {
     PgManyToManyPlugin,
     PrimaryKeyMutationsOnlyPlugin,
     ConnectionFilterPlugin,
+    FulltextFilterPlugin,
   ],
   // skipPlugins: [NodePlugin],
   exportGqlSchemaPath: isDev
@@ -71,7 +75,7 @@ const middleware = postgraphql(authPgPool, 'app_public', {
       token: cookies[`${cookiePrefix}next-auth.session-token`],
       secret: process.env.NEXTAUTH_SECRET || '',
     });
-    const { userId } = jwt as JWT;
+    const { userId } = jwt as JWT ?? {};
     return {
       // Everyone uses the "visitor" role currently
       role: DB_VISITOR,
@@ -94,7 +98,9 @@ const middleware = postgraphql(authPgPool, 'app_public', {
       'greaterThanOrEqualTo',
       'in',
       'notIn',
+      'includesInsensitive',
     ],
+    connectionFilterAllowNullInput: true,
   },
 });
 

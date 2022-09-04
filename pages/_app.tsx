@@ -1,4 +1,5 @@
 import NextApp from 'next/app';
+
 import { SessionProvider } from 'next-auth/react';
 import {
   ApolloClient,

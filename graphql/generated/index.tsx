@@ -97,76 +97,118 @@ export enum AccountsOrderBy {
   UserIdDesc = 'USER_ID_DESC'
 }
 
-/** All input for the create `Following` mutation. */
-export type CreateFollowingInput = {
+export type Bookmark = Node & {
+  __typename?: 'Bookmark';
+  createdAt: Scalars['Datetime'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  /** Reads a single `University` that is related to this `Bookmark`. */
+  university?: Maybe<University>;
+  universityId: Scalars['UUID'];
+  updatedAt: Scalars['Datetime'];
+  /** Reads a single `User` that is related to this `Bookmark`. */
+  user?: Maybe<User>;
+  userId: Scalars['UUID'];
+};
+
+/**
+ * A condition to be used against `Bookmark` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type BookmarkCondition = {
+  /** Checks for equality with the object’s `universityId` field. */
+  universityId?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `userId` field. */
+  userId?: InputMaybe<Scalars['UUID']>;
+};
+
+/** A filter to be used against `Bookmark` object types. All fields are combined with a logical ‘and.’ */
+export type BookmarkFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<BookmarkFilter>>;
+  /** Negates the expression. */
+  not?: InputMaybe<BookmarkFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<BookmarkFilter>>;
+  /** Filter by the object’s `universityId` field. */
+  universityId?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `userId` field. */
+  userId?: InputMaybe<UuidFilter>;
+};
+
+/** An input for mutations affecting `Bookmark` */
+export type BookmarkInput = {
+  universityId: Scalars['UUID'];
+};
+
+/** A connection to a list of `Bookmark` values. */
+export type BookmarksConnection = {
+  __typename?: 'BookmarksConnection';
+  /** A list of edges which contains the `Bookmark` and cursor to aid in pagination. */
+  edges: Array<BookmarksEdge>;
+  /** A list of `Bookmark` objects. */
+  nodes: Array<Bookmark>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `Bookmark` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `Bookmark` edge in the connection. */
+export type BookmarksEdge = {
+  __typename?: 'BookmarksEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `Bookmark` at the end of the edge. */
+  node: Bookmark;
+};
+
+/** Methods to use when ordering `Bookmark`. */
+export enum BookmarksOrderBy {
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
+  UniversityIdAsc = 'UNIVERSITY_ID_ASC',
+  UniversityIdDesc = 'UNIVERSITY_ID_DESC',
+  UserIdAsc = 'USER_ID_ASC',
+  UserIdDesc = 'USER_ID_DESC'
+}
+
+/** All input for the create `Bookmark` mutation. */
+export type CreateBookmarkInput = {
+  /** The `Bookmark` to be created by this mutation. */
+  bookmark: BookmarkInput;
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The `Following` to be created by this mutation. */
-  following: FollowingInput;
 };
 
-/** The output of our create `Following` mutation. */
-export type CreateFollowingPayload = {
-  __typename?: 'CreateFollowingPayload';
+/** The output of our create `Bookmark` mutation. */
+export type CreateBookmarkPayload = {
+  __typename?: 'CreateBookmarkPayload';
+  /** The `Bookmark` that was created by this mutation. */
+  bookmark?: Maybe<Bookmark>;
+  /** An edge for our `Bookmark`. May be used by Relay 1. */
+  bookmarkEdge?: Maybe<BookmarksEdge>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  /** Reads a single `User` that is related to this `Following`. */
-  followee?: Maybe<User>;
-  /** Reads a single `User` that is related to this `Following`. */
-  follower?: Maybe<User>;
-  /** The `Following` that was created by this mutation. */
-  following?: Maybe<Following>;
-  /** An edge for our `Following`. May be used by Relay 1. */
-  followingEdge?: Maybe<FollowingsEdge>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `University` that is related to this `Bookmark`. */
+  university?: Maybe<University>;
+  /** Reads a single `User` that is related to this `Bookmark`. */
+  user?: Maybe<User>;
 };
 
 
-/** The output of our create `Following` mutation. */
-export type CreateFollowingPayloadFollowingEdgeArgs = {
-  orderBy?: InputMaybe<Array<FollowingsOrderBy>>;
-};
-
-/** All input for the create `Post` mutation. */
-export type CreatePostInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The `Post` to be created by this mutation. */
-  post: PostInput;
-};
-
-/** The output of our create `Post` mutation. */
-export type CreatePostPayload = {
-  __typename?: 'CreatePostPayload';
-  /** Reads a single `User` that is related to this `Post`. */
-  author?: Maybe<User>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  /** The `Post` that was created by this mutation. */
-  post?: Maybe<Post>;
-  /** An edge for our `Post`. May be used by Relay 1. */
-  postEdge?: Maybe<PostsEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our create `Post` mutation. */
-export type CreatePostPayloadPostEdgeArgs = {
-  orderBy?: InputMaybe<Array<PostsOrderBy>>;
+/** The output of our create `Bookmark` mutation. */
+export type CreateBookmarkPayloadBookmarkEdgeArgs = {
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
 };
 
 /** A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’ */
@@ -241,177 +283,54 @@ export type DeleteAccountPayloadAccountEdgeArgs = {
   orderBy?: InputMaybe<Array<AccountsOrderBy>>;
 };
 
-/** All input for the `deleteFollowingByNodeId` mutation. */
-export type DeleteFollowingByNodeIdInput = {
+/** All input for the `deleteBookmarkByNodeId` mutation. */
+export type DeleteBookmarkByNodeIdInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Following` to be deleted. */
+  /** The globally unique `ID` which will identify a single `Bookmark` to be deleted. */
   nodeId: Scalars['ID'];
 };
 
-/** All input for the `deleteFollowing` mutation. */
-export type DeleteFollowingInput = {
+/** All input for the `deleteBookmark` mutation. */
+export type DeleteBookmarkInput = {
   /**
    * An arbitrary string value with no semantic meaning. Will be included in the
    * payload verbatim. May be used to track mutations by the client.
    */
   clientMutationId?: InputMaybe<Scalars['String']>;
-  followeeId: Scalars['UUID'];
-  followerId: Scalars['UUID'];
+  universityId: Scalars['UUID'];
+  userId: Scalars['UUID'];
 };
 
-/** The output of our delete `Following` mutation. */
-export type DeleteFollowingPayload = {
-  __typename?: 'DeleteFollowingPayload';
+/** The output of our delete `Bookmark` mutation. */
+export type DeleteBookmarkPayload = {
+  __typename?: 'DeleteBookmarkPayload';
+  /** The `Bookmark` that was deleted by this mutation. */
+  bookmark?: Maybe<Bookmark>;
+  /** An edge for our `Bookmark`. May be used by Relay 1. */
+  bookmarkEdge?: Maybe<BookmarksEdge>;
   /**
    * The exact same `clientMutationId` that was provided in the mutation input,
    * unchanged and unused. May be used by a client to track mutations.
    */
   clientMutationId?: Maybe<Scalars['String']>;
-  deletedFollowingNodeId?: Maybe<Scalars['ID']>;
-  /** Reads a single `User` that is related to this `Following`. */
-  followee?: Maybe<User>;
-  /** Reads a single `User` that is related to this `Following`. */
-  follower?: Maybe<User>;
-  /** The `Following` that was deleted by this mutation. */
-  following?: Maybe<Following>;
-  /** An edge for our `Following`. May be used by Relay 1. */
-  followingEdge?: Maybe<FollowingsEdge>;
+  deletedBookmarkNodeId?: Maybe<Scalars['ID']>;
   /** Our root query field type. Allows us to run any query from our mutation payload. */
   query?: Maybe<Query>;
+  /** Reads a single `University` that is related to this `Bookmark`. */
+  university?: Maybe<University>;
+  /** Reads a single `User` that is related to this `Bookmark`. */
+  user?: Maybe<User>;
 };
 
 
-/** The output of our delete `Following` mutation. */
-export type DeleteFollowingPayloadFollowingEdgeArgs = {
-  orderBy?: InputMaybe<Array<FollowingsOrderBy>>;
+/** The output of our delete `Bookmark` mutation. */
+export type DeleteBookmarkPayloadBookmarkEdgeArgs = {
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
 };
-
-/** All input for the `deletePostByNodeId` mutation. */
-export type DeletePostByNodeIdInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  /** The globally unique `ID` which will identify a single `Post` to be deleted. */
-  nodeId: Scalars['ID'];
-};
-
-/** All input for the `deletePost` mutation. */
-export type DeletePostInput = {
-  /**
-   * An arbitrary string value with no semantic meaning. Will be included in the
-   * payload verbatim. May be used to track mutations by the client.
-   */
-  clientMutationId?: InputMaybe<Scalars['String']>;
-  id: Scalars['UUID'];
-};
-
-/** The output of our delete `Post` mutation. */
-export type DeletePostPayload = {
-  __typename?: 'DeletePostPayload';
-  /** Reads a single `User` that is related to this `Post`. */
-  author?: Maybe<User>;
-  /**
-   * The exact same `clientMutationId` that was provided in the mutation input,
-   * unchanged and unused. May be used by a client to track mutations.
-   */
-  clientMutationId?: Maybe<Scalars['String']>;
-  deletedPostNodeId?: Maybe<Scalars['ID']>;
-  /** The `Post` that was deleted by this mutation. */
-  post?: Maybe<Post>;
-  /** An edge for our `Post`. May be used by Relay 1. */
-  postEdge?: Maybe<PostsEdge>;
-  /** Our root query field type. Allows us to run any query from our mutation payload. */
-  query?: Maybe<Query>;
-};
-
-
-/** The output of our delete `Post` mutation. */
-export type DeletePostPayloadPostEdgeArgs = {
-  orderBy?: InputMaybe<Array<PostsOrderBy>>;
-};
-
-export type Following = Node & {
-  __typename?: 'Following';
-  createdAt: Scalars['Datetime'];
-  /** Reads a single `User` that is related to this `Following`. */
-  followee?: Maybe<User>;
-  followeeId: Scalars['UUID'];
-  /** Reads a single `User` that is related to this `Following`. */
-  follower?: Maybe<User>;
-  followerId: Scalars['UUID'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
-  updatedAt: Scalars['Datetime'];
-};
-
-/**
- * A condition to be used against `Following` object types. All fields are tested
- * for equality and combined with a logical ‘and.’
- */
-export type FollowingCondition = {
-  /** Checks for equality with the object’s `followeeId` field. */
-  followeeId?: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `followerId` field. */
-  followerId?: InputMaybe<Scalars['UUID']>;
-};
-
-/** A filter to be used against `Following` object types. All fields are combined with a logical ‘and.’ */
-export type FollowingFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<FollowingFilter>>;
-  /** Filter by the object’s `followeeId` field. */
-  followeeId?: InputMaybe<UuidFilter>;
-  /** Filter by the object’s `followerId` field. */
-  followerId?: InputMaybe<UuidFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<FollowingFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<FollowingFilter>>;
-};
-
-/** An input for mutations affecting `Following` */
-export type FollowingInput = {
-  followeeId: Scalars['UUID'];
-};
-
-/** A connection to a list of `Following` values. */
-export type FollowingsConnection = {
-  __typename?: 'FollowingsConnection';
-  /** A list of edges which contains the `Following` and cursor to aid in pagination. */
-  edges: Array<FollowingsEdge>;
-  /** A list of `Following` objects. */
-  nodes: Array<Following>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `Following` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `Following` edge in the connection. */
-export type FollowingsEdge = {
-  __typename?: 'FollowingsEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `Following` at the end of the edge. */
-  node: Following;
-};
-
-/** Methods to use when ordering `Following`. */
-export enum FollowingsOrderBy {
-  FolloweeIdAsc = 'FOLLOWEE_ID_ASC',
-  FolloweeIdDesc = 'FOLLOWEE_ID_DESC',
-  FollowerIdAsc = 'FOLLOWER_ID_ASC',
-  FollowerIdDesc = 'FOLLOWER_ID_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
-}
 
 export type ListenPayload = {
   __typename?: 'ListenPayload';
@@ -424,22 +343,16 @@ export type ListenPayload = {
 /** The root mutation type which contains root level fields which mutate data. */
 export type Mutation = {
   __typename?: 'Mutation';
-  /** Creates a single `Following`. */
-  createFollowing?: Maybe<CreateFollowingPayload>;
-  /** Creates a single `Post`. */
-  createPost?: Maybe<CreatePostPayload>;
+  /** Creates a single `Bookmark`. */
+  createBookmark?: Maybe<CreateBookmarkPayload>;
   /** Deletes a single `Account` using a unique key. */
   deleteAccount?: Maybe<DeleteAccountPayload>;
   /** Deletes a single `Account` using its globally unique id. */
   deleteAccountByNodeId?: Maybe<DeleteAccountPayload>;
-  /** Deletes a single `Following` using a unique key. */
-  deleteFollowing?: Maybe<DeleteFollowingPayload>;
-  /** Deletes a single `Following` using its globally unique id. */
-  deleteFollowingByNodeId?: Maybe<DeleteFollowingPayload>;
-  /** Deletes a single `Post` using a unique key. */
-  deletePost?: Maybe<DeletePostPayload>;
-  /** Deletes a single `Post` using its globally unique id. */
-  deletePostByNodeId?: Maybe<DeletePostPayload>;
+  /** Deletes a single `Bookmark` using a unique key. */
+  deleteBookmark?: Maybe<DeleteBookmarkPayload>;
+  /** Deletes a single `Bookmark` using its globally unique id. */
+  deleteBookmarkByNodeId?: Maybe<DeleteBookmarkPayload>;
   /** Updates a single `User` using a unique key and a patch. */
   updateUser?: Maybe<UpdateUserPayload>;
   /** Updates a single `User` using its globally unique id and a patch. */
@@ -448,14 +361,8 @@ export type Mutation = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreateFollowingArgs = {
-  input: CreateFollowingInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationCreatePostArgs = {
-  input: CreatePostInput;
+export type MutationCreateBookmarkArgs = {
+  input: CreateBookmarkInput;
 };
 
 
@@ -472,26 +379,14 @@ export type MutationDeleteAccountByNodeIdArgs = {
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteFollowingArgs = {
-  input: DeleteFollowingInput;
+export type MutationDeleteBookmarkArgs = {
+  input: DeleteBookmarkInput;
 };
 
 
 /** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeleteFollowingByNodeIdArgs = {
-  input: DeleteFollowingByNodeIdInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeletePostArgs = {
-  input: DeletePostInput;
-};
-
-
-/** The root mutation type which contains root level fields which mutate data. */
-export type MutationDeletePostByNodeIdArgs = {
-  input: DeletePostByNodeIdInput;
+export type MutationDeleteBookmarkByNodeIdArgs = {
+  input: DeleteBookmarkByNodeIdInput;
 };
 
 
@@ -525,85 +420,6 @@ export type PageInfo = {
   startCursor?: Maybe<Scalars['Cursor']>;
 };
 
-export type Post = Node & {
-  __typename?: 'Post';
-  /** Reads a single `User` that is related to this `Post`. */
-  author?: Maybe<User>;
-  authorId: Scalars['UUID'];
-  createdAt: Scalars['Datetime'];
-  id: Scalars['UUID'];
-  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
-  nodeId: Scalars['ID'];
-  text: Scalars['String'];
-  updatedAt: Scalars['Datetime'];
-};
-
-/** A condition to be used against `Post` object types. All fields are tested for equality and combined with a logical ‘and.’ */
-export type PostCondition = {
-  /** Checks for equality with the object’s `authorId` field. */
-  authorId?: InputMaybe<Scalars['UUID']>;
-  /** Checks for equality with the object’s `createdAt` field. */
-  createdAt?: InputMaybe<Scalars['Datetime']>;
-  /** Checks for equality with the object’s `id` field. */
-  id?: InputMaybe<Scalars['UUID']>;
-};
-
-/** A filter to be used against `Post` object types. All fields are combined with a logical ‘and.’ */
-export type PostFilter = {
-  /** Checks for all expressions in this list. */
-  and?: InputMaybe<Array<PostFilter>>;
-  /** Filter by the object’s `authorId` field. */
-  authorId?: InputMaybe<UuidFilter>;
-  /** Filter by the object’s `createdAt` field. */
-  createdAt?: InputMaybe<DatetimeFilter>;
-  /** Filter by the object’s `id` field. */
-  id?: InputMaybe<UuidFilter>;
-  /** Negates the expression. */
-  not?: InputMaybe<PostFilter>;
-  /** Checks for any expressions in this list. */
-  or?: InputMaybe<Array<PostFilter>>;
-};
-
-/** An input for mutations affecting `Post` */
-export type PostInput = {
-  text: Scalars['String'];
-};
-
-/** A connection to a list of `Post` values. */
-export type PostsConnection = {
-  __typename?: 'PostsConnection';
-  /** A list of edges which contains the `Post` and cursor to aid in pagination. */
-  edges: Array<PostsEdge>;
-  /** A list of `Post` objects. */
-  nodes: Array<Post>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `Post` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `Post` edge in the connection. */
-export type PostsEdge = {
-  __typename?: 'PostsEdge';
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `Post` at the end of the edge. */
-  node: Post;
-};
-
-/** Methods to use when ordering `Post`. */
-export enum PostsOrderBy {
-  AuthorIdAsc = 'AUTHOR_ID_ASC',
-  AuthorIdDesc = 'AUTHOR_ID_DESC',
-  CreatedAtAsc = 'CREATED_AT_ASC',
-  CreatedAtDesc = 'CREATED_AT_DESC',
-  IdAsc = 'ID_ASC',
-  IdDesc = 'ID_DESC',
-  Natural = 'NATURAL',
-  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
-  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
-}
-
 /** The root query type which gives access points into the data universe. */
 export type Query = Node & {
   __typename?: 'Query';
@@ -612,24 +428,24 @@ export type Query = Node & {
   accountByNodeId?: Maybe<Account>;
   /** Reads and enables pagination through a set of `Account`. */
   accounts?: Maybe<AccountsConnection>;
+  bookmark?: Maybe<Bookmark>;
+  /** Reads a single `Bookmark` using its globally unique `ID`. */
+  bookmarkByNodeId?: Maybe<Bookmark>;
+  /** Reads and enables pagination through a set of `Bookmark`. */
+  bookmarks?: Maybe<BookmarksConnection>;
   /** The currently logged in user (or null if not logged in). */
   currentUser?: Maybe<User>;
   /** Handy method to get the current user ID for use in RLS policies, etc; in GraphQL, use `currentUser{id}` instead. */
   currentUserId?: Maybe<Scalars['UUID']>;
-  following?: Maybe<Following>;
-  /** Reads a single `Following` using its globally unique `ID`. */
-  followingByNodeId?: Maybe<Following>;
-  /** Reads and enables pagination through a set of `Following`. */
-  followings?: Maybe<FollowingsConnection>;
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
   nodeId: Scalars['ID'];
-  post?: Maybe<Post>;
-  /** Reads a single `Post` using its globally unique `ID`. */
-  postByNodeId?: Maybe<Post>;
-  /** Reads and enables pagination through a set of `Post`. */
-  posts?: Maybe<PostsConnection>;
+  /** Reads and enables pagination through a set of `University`. */
+  universities?: Maybe<UniversitiesConnection>;
+  university?: Maybe<University>;
+  /** Reads a single `University` using its globally unique `ID`. */
+  universityByNodeId?: Maybe<University>;
   user?: Maybe<User>;
   /** Reads a single `User` using its globally unique `ID`. */
   userByNodeId?: Maybe<User>;
@@ -665,28 +481,28 @@ export type QueryAccountsArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryFollowingArgs = {
-  followeeId: Scalars['UUID'];
-  followerId: Scalars['UUID'];
+export type QueryBookmarkArgs = {
+  universityId: Scalars['UUID'];
+  userId: Scalars['UUID'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryFollowingByNodeIdArgs = {
+export type QueryBookmarkByNodeIdArgs = {
   nodeId: Scalars['ID'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryFollowingsArgs = {
+export type QueryBookmarksArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<FollowingCondition>;
-  filter?: InputMaybe<FollowingFilter>;
+  condition?: InputMaybe<BookmarkCondition>;
+  filter?: InputMaybe<BookmarkFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<FollowingsOrderBy>>;
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
 };
 
 
@@ -697,27 +513,27 @@ export type QueryNodeArgs = {
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryPostArgs = {
+export type QueryUniversitiesArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UniversityCondition>;
+  filter?: InputMaybe<UniversityFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UniversitiesOrderBy>>;
+};
+
+
+/** The root query type which gives access points into the data universe. */
+export type QueryUniversityArgs = {
   id: Scalars['UUID'];
 };
 
 
 /** The root query type which gives access points into the data universe. */
-export type QueryPostByNodeIdArgs = {
+export type QueryUniversityByNodeIdArgs = {
   nodeId: Scalars['ID'];
-};
-
-
-/** The root query type which gives access points into the data universe. */
-export type QueryPostsArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<PostCondition>;
-  filter?: InputMaybe<PostFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<PostsOrderBy>>;
 };
 
 
@@ -763,6 +579,8 @@ export type StringFilter = {
   greaterThanOrEqualTo?: InputMaybe<Scalars['String']>;
   /** Included in the specified list. */
   in?: InputMaybe<Array<Scalars['String']>>;
+  /** Contains the specified string (case-insensitive). */
+  includesInsensitive?: InputMaybe<Scalars['String']>;
   /** Is null (if `true` is specified) or is not null (if `false` is specified). */
   isNull?: InputMaybe<Scalars['Boolean']>;
   /** Less than the specified value. */
@@ -813,6 +631,140 @@ export type UuidFilter = {
   notEqualTo?: InputMaybe<Scalars['UUID']>;
   /** Not included in the specified list. */
   notIn?: InputMaybe<Array<Scalars['UUID']>>;
+};
+
+/** A connection to a list of `University` values. */
+export type UniversitiesConnection = {
+  __typename?: 'UniversitiesConnection';
+  /** A list of edges which contains the `University` and cursor to aid in pagination. */
+  edges: Array<UniversitiesEdge>;
+  /** A list of `University` objects. */
+  nodes: Array<University>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `University` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `University` edge in the connection. */
+export type UniversitiesEdge = {
+  __typename?: 'UniversitiesEdge';
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `University` at the end of the edge. */
+  node: University;
+};
+
+/** Methods to use when ordering `University`. */
+export enum UniversitiesOrderBy {
+  CountryIso2Asc = 'COUNTRY_ISO2_ASC',
+  CountryIso2Desc = 'COUNTRY_ISO2_DESC',
+  CreatedAtAsc = 'CREATED_AT_ASC',
+  CreatedAtDesc = 'CREATED_AT_DESC',
+  IdAsc = 'ID_ASC',
+  IdDesc = 'ID_DESC',
+  NameAsc = 'NAME_ASC',
+  NameDesc = 'NAME_DESC',
+  Natural = 'NATURAL',
+  PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
+  PrimaryKeyDesc = 'PRIMARY_KEY_DESC'
+}
+
+export type University = Node & {
+  __typename?: 'University';
+  /** Reads and enables pagination through a set of `Bookmark`. */
+  bookmarks: BookmarksConnection;
+  countryIso2: Scalars['String'];
+  createdAt: Scalars['Datetime'];
+  details: Scalars['JSON'];
+  id: Scalars['UUID'];
+  name: Scalars['String'];
+  /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
+  nodeId: Scalars['ID'];
+  updatedAt: Scalars['Datetime'];
+  /** Reads and enables pagination through a set of `User`. */
+  usersByBookmarkUniversityIdAndUserId: UniversityUsersByBookmarkUniversityIdAndUserIdManyToManyConnection;
+};
+
+
+export type UniversityBookmarksArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<BookmarkCondition>;
+  filter?: InputMaybe<BookmarkFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
+};
+
+
+export type UniversityUsersByBookmarkUniversityIdAndUserIdArgs = {
+  after?: InputMaybe<Scalars['Cursor']>;
+  before?: InputMaybe<Scalars['Cursor']>;
+  condition?: InputMaybe<UserCondition>;
+  filter?: InputMaybe<UserFilter>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Array<UsersOrderBy>>;
+};
+
+/**
+ * A condition to be used against `University` object types. All fields are tested
+ * for equality and combined with a logical ‘and.’
+ */
+export type UniversityCondition = {
+  /** Checks for equality with the object’s `countryIso2` field. */
+  countryIso2?: InputMaybe<Scalars['String']>;
+  /** Checks for equality with the object’s `createdAt` field. */
+  createdAt?: InputMaybe<Scalars['Datetime']>;
+  /** Checks for equality with the object’s `id` field. */
+  id?: InputMaybe<Scalars['UUID']>;
+  /** Checks for equality with the object’s `name` field. */
+  name?: InputMaybe<Scalars['String']>;
+};
+
+/** A filter to be used against `University` object types. All fields are combined with a logical ‘and.’ */
+export type UniversityFilter = {
+  /** Checks for all expressions in this list. */
+  and?: InputMaybe<Array<UniversityFilter>>;
+  /** Filter by the object’s `countryIso2` field. */
+  countryIso2?: InputMaybe<StringFilter>;
+  /** Filter by the object’s `createdAt` field. */
+  createdAt?: InputMaybe<DatetimeFilter>;
+  /** Filter by the object’s `id` field. */
+  id?: InputMaybe<UuidFilter>;
+  /** Filter by the object’s `name` field. */
+  name?: InputMaybe<StringFilter>;
+  /** Negates the expression. */
+  not?: InputMaybe<UniversityFilter>;
+  /** Checks for any expressions in this list. */
+  or?: InputMaybe<Array<UniversityFilter>>;
+};
+
+/** A connection to a list of `User` values, with data from `Bookmark`. */
+export type UniversityUsersByBookmarkUniversityIdAndUserIdManyToManyConnection = {
+  __typename?: 'UniversityUsersByBookmarkUniversityIdAndUserIdManyToManyConnection';
+  /** A list of edges which contains the `User`, info from the `Bookmark`, and the cursor to aid in pagination. */
+  edges: Array<UniversityUsersByBookmarkUniversityIdAndUserIdManyToManyEdge>;
+  /** A list of `User` objects. */
+  nodes: Array<User>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `User` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `User` edge in the connection, with data from `Bookmark`. */
+export type UniversityUsersByBookmarkUniversityIdAndUserIdManyToManyEdge = {
+  __typename?: 'UniversityUsersByBookmarkUniversityIdAndUserIdManyToManyEdge';
+  createdAt: Scalars['Datetime'];
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `User` at the end of the edge. */
+  node: User;
+  updatedAt: Scalars['Datetime'];
 };
 
 /** All input for the `updateUserByNodeId` mutation. */
@@ -867,19 +819,17 @@ export type User = Node & {
   __typename?: 'User';
   /** Reads and enables pagination through a set of `Account`. */
   accounts: AccountsConnection;
-  /** Reads and enables pagination through a set of `Post`. */
-  authoredPosts: PostsConnection;
+  /** Reads and enables pagination through a set of `Bookmark`. */
+  bookmarks: BookmarksConnection;
   createdAt: Scalars['Datetime'];
   description?: Maybe<Scalars['String']>;
-  /** Reads and enables pagination through a set of `User`. */
-  followees: UserFolloweesManyToManyConnection;
-  /** Reads and enables pagination through a set of `User`. */
-  followers: UserFollowersManyToManyConnection;
   id: Scalars['UUID'];
   image?: Maybe<Scalars['String']>;
   name?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
+  /** Reads and enables pagination through a set of `University`. */
+  universitiesByBookmarkUserIdAndUniversityId: UserUniversitiesByBookmarkUserIdAndUniversityIdManyToManyConnection;
   updatedAt: Scalars['Datetime'];
   /** Unique name. */
   username?: Maybe<Scalars['String']>;
@@ -900,41 +850,28 @@ export type UserAccountsArgs = {
 
 
 /** A user who can log in to the application. */
-export type UserAuthoredPostsArgs = {
+export type UserBookmarksArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<PostCondition>;
-  filter?: InputMaybe<PostFilter>;
+  condition?: InputMaybe<BookmarkCondition>;
+  filter?: InputMaybe<BookmarkFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<PostsOrderBy>>;
+  orderBy?: InputMaybe<Array<BookmarksOrderBy>>;
 };
 
 
 /** A user who can log in to the application. */
-export type UserFolloweesArgs = {
+export type UserUniversitiesByBookmarkUserIdAndUniversityIdArgs = {
   after?: InputMaybe<Scalars['Cursor']>;
   before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<UserCondition>;
-  filter?: InputMaybe<UserFilter>;
+  condition?: InputMaybe<UniversityCondition>;
+  filter?: InputMaybe<UniversityFilter>;
   first?: InputMaybe<Scalars['Int']>;
   last?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<UsersOrderBy>>;
-};
-
-
-/** A user who can log in to the application. */
-export type UserFollowersArgs = {
-  after?: InputMaybe<Scalars['Cursor']>;
-  before?: InputMaybe<Scalars['Cursor']>;
-  condition?: InputMaybe<UserCondition>;
-  filter?: InputMaybe<UserFilter>;
-  first?: InputMaybe<Scalars['Int']>;
-  last?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Array<UsersOrderBy>>;
+  orderBy?: InputMaybe<Array<UniversitiesOrderBy>>;
 };
 
 /** A condition to be used against `User` object types. All fields are tested for equality and combined with a logical ‘and.’ */
@@ -959,60 +896,36 @@ export type UserFilter = {
   username?: InputMaybe<StringFilter>;
 };
 
-/** A connection to a list of `User` values, with data from `Following`. */
-export type UserFolloweesManyToManyConnection = {
-  __typename?: 'UserFolloweesManyToManyConnection';
-  /** A list of edges which contains the `User`, info from the `Following`, and the cursor to aid in pagination. */
-  edges: Array<UserFolloweesManyToManyEdge>;
-  /** A list of `User` objects. */
-  nodes: Array<User>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `User` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `User` edge in the connection, with data from `Following`. */
-export type UserFolloweesManyToManyEdge = {
-  __typename?: 'UserFolloweesManyToManyEdge';
-  createdAt: Scalars['Datetime'];
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `User` at the end of the edge. */
-  node: User;
-  updatedAt: Scalars['Datetime'];
-};
-
-/** A connection to a list of `User` values, with data from `Following`. */
-export type UserFollowersManyToManyConnection = {
-  __typename?: 'UserFollowersManyToManyConnection';
-  /** A list of edges which contains the `User`, info from the `Following`, and the cursor to aid in pagination. */
-  edges: Array<UserFollowersManyToManyEdge>;
-  /** A list of `User` objects. */
-  nodes: Array<User>;
-  /** Information to aid in pagination. */
-  pageInfo: PageInfo;
-  /** The count of *all* `User` you could get from the connection. */
-  totalCount: Scalars['Int'];
-};
-
-/** A `User` edge in the connection, with data from `Following`. */
-export type UserFollowersManyToManyEdge = {
-  __typename?: 'UserFollowersManyToManyEdge';
-  createdAt: Scalars['Datetime'];
-  /** A cursor for use in pagination. */
-  cursor?: Maybe<Scalars['Cursor']>;
-  /** The `User` at the end of the edge. */
-  node: User;
-  updatedAt: Scalars['Datetime'];
-};
-
 /** Represents an update to a `User`. Fields that are set will be updated. */
 export type UserPatch = {
   description?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
   /** Unique name. */
   username?: InputMaybe<Scalars['String']>;
+};
+
+/** A connection to a list of `University` values, with data from `Bookmark`. */
+export type UserUniversitiesByBookmarkUserIdAndUniversityIdManyToManyConnection = {
+  __typename?: 'UserUniversitiesByBookmarkUserIdAndUniversityIdManyToManyConnection';
+  /** A list of edges which contains the `University`, info from the `Bookmark`, and the cursor to aid in pagination. */
+  edges: Array<UserUniversitiesByBookmarkUserIdAndUniversityIdManyToManyEdge>;
+  /** A list of `University` objects. */
+  nodes: Array<University>;
+  /** Information to aid in pagination. */
+  pageInfo: PageInfo;
+  /** The count of *all* `University` you could get from the connection. */
+  totalCount: Scalars['Int'];
+};
+
+/** A `University` edge in the connection, with data from `Bookmark`. */
+export type UserUniversitiesByBookmarkUserIdAndUniversityIdManyToManyEdge = {
+  __typename?: 'UserUniversitiesByBookmarkUserIdAndUniversityIdManyToManyEdge';
+  createdAt: Scalars['Datetime'];
+  /** A cursor for use in pagination. */
+  cursor?: Maybe<Scalars['Cursor']>;
+  /** The `University` at the end of the edge. */
+  node: University;
+  updatedAt: Scalars['Datetime'];
 };
 
 /** A connection to a list of `User` values. */
@@ -1048,89 +961,66 @@ export enum UsersOrderBy {
   UsernameDesc = 'USERNAME_DESC'
 }
 
-export type PostFragmentFragment = { __typename?: 'Post', id: any, text: string, createdAt: any, author?: { __typename?: 'User', id: any, name?: string | null, image?: string | null } | null };
+export type CreateBookmarkMutationVariables = Exact<{
+  universityId: Scalars['UUID'];
+}>;
 
-export type PostsQueryVariables = Exact<{
+
+export type CreateBookmarkMutation = { __typename?: 'Mutation', createBookmark?: { __typename?: 'CreateBookmarkPayload', clientMutationId?: string | null } | null };
+
+export type DeleteBookmarkMutationVariables = Exact<{
+  nodeId: Scalars['ID'];
+}>;
+
+
+export type DeleteBookmarkMutation = { __typename?: 'Mutation', deleteBookmarkByNodeId?: { __typename?: 'DeleteBookmarkPayload', clientMutationId?: string | null } | null };
+
+export type UniversityFragmentFragment = { __typename?: 'University', id: any, name: string, details: any, createdAt: any, bookmarks: { __typename?: 'BookmarksConnection', nodes: Array<{ __typename?: 'Bookmark', nodeId: string }> } };
+
+export type UniversitiesQueryVariables = Exact<{
+  search?: InputMaybe<Scalars['String']>;
+  countryIso2?: InputMaybe<Scalars['String']>;
+  orderBy?: InputMaybe<Array<UniversitiesOrderBy> | UniversitiesOrderBy>;
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['Cursor']>;
 }>;
 
 
-export type PostsQuery = { __typename?: 'Query', posts?: { __typename?: 'PostsConnection', totalCount: number, edges: Array<{ __typename?: 'PostsEdge', node: { __typename?: 'Post', id: any, text: string, createdAt: any, author?: { __typename?: 'User', id: any, name?: string | null, image?: string | null } | null } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: any | null } } | null };
+export type UniversitiesQuery = { __typename?: 'Query', universities?: { __typename?: 'UniversitiesConnection', totalCount: number, edges: Array<{ __typename?: 'UniversitiesEdge', node: { __typename?: 'University', id: any, name: string, details: any, createdAt: any, bookmarks: { __typename?: 'BookmarksConnection', nodes: Array<{ __typename?: 'Bookmark', nodeId: string }> } } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: any | null } } | null };
 
-export type CreatePostMutationVariables = Exact<{
-  text: Scalars['String'];
+export type BookmarkedUniversitiesQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['Cursor']>;
 }>;
 
 
-export type CreatePostMutation = { __typename?: 'Mutation', createPost?: { __typename?: 'CreatePostPayload', post?: { __typename?: 'Post', id: any, text: string, createdAt: any, author?: { __typename?: 'User', id: any, name?: string | null, image?: string | null } | null } | null } | null };
+export type BookmarkedUniversitiesQuery = { __typename?: 'Query', bookmarks?: { __typename?: 'BookmarksConnection', totalCount: number, edges: Array<{ __typename?: 'BookmarksEdge', node: { __typename?: 'Bookmark', nodeId: string, university?: { __typename?: 'University', id: any, name: string, details: any, createdAt: any, bookmarks: { __typename?: 'BookmarksConnection', nodes: Array<{ __typename?: 'Bookmark', nodeId: string }> } } | null } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor?: any | null } } | null };
 
-export type NewPostSubscriptionVariables = Exact<{ [key: string]: never; }>;
-
-
-export type NewPostSubscription = { __typename?: 'Subscription', listen: { __typename?: 'ListenPayload', relatedNode?: { __typename?: 'Account' } | { __typename?: 'Following' } | { __typename?: 'Post', id: any, text: string, createdAt: any, author?: { __typename?: 'User', id: any, name?: string | null, image?: string | null } | null } | { __typename?: 'Query' } | { __typename?: 'User' } | null } };
-
-export type UserFragmentFragment = { __typename?: 'User', id: any, name?: string | null, image?: string | null, username?: string | null, description?: string | null, authoredPosts: { __typename?: 'PostsConnection', totalCount: number }, followers: { __typename?: 'UserFollowersManyToManyConnection', totalCount: number }, followees: { __typename?: 'UserFolloweesManyToManyConnection', totalCount: number } };
-
-export type FollowingFragmentFragment = { __typename?: 'User', followers: { __typename?: 'UserFollowersManyToManyConnection', totalCount: number, edges: Array<{ __typename?: 'UserFollowersManyToManyEdge', node: { __typename?: 'User', id: any, name?: string | null, image?: string | null } }> }, followees: { __typename?: 'UserFolloweesManyToManyConnection', totalCount: number, edges: Array<{ __typename?: 'UserFolloweesManyToManyEdge', node: { __typename?: 'User', id: any, name?: string | null, image?: string | null } }> } };
+export type UserFragmentFragment = { __typename?: 'User', id: any, name?: string | null, image?: string | null, username?: string | null, description?: string | null };
 
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, name?: string | null, image?: string | null, username?: string | null, description?: string | null, authoredPosts: { __typename?: 'PostsConnection', totalCount: number }, followers: { __typename?: 'UserFollowersManyToManyConnection', totalCount: number }, followees: { __typename?: 'UserFolloweesManyToManyConnection', totalCount: number } } | null };
-
-export type MyFollowingsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MyFollowingsQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', followers: { __typename?: 'UserFollowersManyToManyConnection', totalCount: number, edges: Array<{ __typename?: 'UserFollowersManyToManyEdge', node: { __typename?: 'User', id: any, name?: string | null, image?: string | null } }> }, followees: { __typename?: 'UserFolloweesManyToManyConnection', totalCount: number, edges: Array<{ __typename?: 'UserFolloweesManyToManyEdge', node: { __typename?: 'User', id: any, name?: string | null, image?: string | null } }> } } | null };
+export type CurrentUserQuery = { __typename?: 'Query', currentUser?: { __typename?: 'User', id: any, name?: string | null, image?: string | null, username?: string | null, description?: string | null } | null };
 
 export type UserQueryVariables = Exact<{
   id: Scalars['UUID'];
 }>;
 
 
-export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: any, name?: string | null, image?: string | null, username?: string | null, description?: string | null, authoredPosts: { __typename?: 'PostsConnection', totalCount: number }, followers: { __typename?: 'UserFollowersManyToManyConnection', totalCount: number }, followees: { __typename?: 'UserFolloweesManyToManyConnection', totalCount: number } } | null };
+export type UserQuery = { __typename?: 'Query', user?: { __typename?: 'User', id: any, name?: string | null, image?: string | null, username?: string | null, description?: string | null } | null };
 
-export type UserFollowingsQueryVariables = Exact<{
-  id: Scalars['UUID'];
-}>;
-
-
-export type UserFollowingsQuery = { __typename?: 'Query', user?: { __typename?: 'User', followers: { __typename?: 'UserFollowersManyToManyConnection', totalCount: number, edges: Array<{ __typename?: 'UserFollowersManyToManyEdge', node: { __typename?: 'User', id: any, name?: string | null, image?: string | null } }> }, followees: { __typename?: 'UserFolloweesManyToManyConnection', totalCount: number, edges: Array<{ __typename?: 'UserFolloweesManyToManyEdge', node: { __typename?: 'User', id: any, name?: string | null, image?: string | null } }> } } | null };
-
-export type IsFollowingQueryVariables = Exact<{
-  followeeId: Scalars['UUID'];
-  followerId: Scalars['UUID'];
-}>;
-
-
-export type IsFollowingQuery = { __typename?: 'Query', following?: { __typename?: 'Following', followeeId: any } | null };
-
-export type FollowMutationVariables = Exact<{
-  followeeId: Scalars['UUID'];
-}>;
-
-
-export type FollowMutation = { __typename?: 'Mutation', createFollowing?: { __typename?: 'CreateFollowingPayload', clientMutationId?: string | null } | null };
-
-export type UnFollowMutationVariables = Exact<{
-  followeeId: Scalars['UUID'];
-  followerId: Scalars['UUID'];
-}>;
-
-
-export type UnFollowMutation = { __typename?: 'Mutation', deleteFollowing?: { __typename?: 'DeleteFollowingPayload', clientMutationId?: string | null } | null };
-
-export const PostFragmentFragmentDoc = gql`
-    fragment PostFragment on Post {
+export const UniversityFragmentFragmentDoc = gql`
+    fragment UniversityFragment on University {
   id
-  text
-  author {
-    id
-    name
-    image
-  }
+  name
+  details
   createdAt
+  bookmarks {
+    nodes {
+      nodeId
+    }
+  }
 }
     `;
 export const UserFragmentFragmentDoc = gql`
@@ -1140,47 +1030,85 @@ export const UserFragmentFragmentDoc = gql`
   image
   username
   description
-  authoredPosts {
-    totalCount
-  }
-  followers {
-    totalCount
-  }
-  followees {
-    totalCount
+}
+    `;
+export const CreateBookmarkDocument = gql`
+    mutation CreateBookmark($universityId: UUID!) {
+  createBookmark(input: {bookmark: {universityId: $universityId}}) {
+    clientMutationId
   }
 }
     `;
-export const FollowingFragmentFragmentDoc = gql`
-    fragment FollowingFragment on User {
-  followers {
-    edges {
-      node {
-        id
-        name
-        image
+export type CreateBookmarkMutationFn = Apollo.MutationFunction<CreateBookmarkMutation, CreateBookmarkMutationVariables>;
+
+/**
+ * __useCreateBookmarkMutation__
+ *
+ * To run a mutation, you first call `useCreateBookmarkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateBookmarkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createBookmarkMutation, { data, loading, error }] = useCreateBookmarkMutation({
+ *   variables: {
+ *      universityId: // value for 'universityId'
+ *   },
+ * });
+ */
+export function useCreateBookmarkMutation(baseOptions?: Apollo.MutationHookOptions<CreateBookmarkMutation, CreateBookmarkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateBookmarkMutation, CreateBookmarkMutationVariables>(CreateBookmarkDocument, options);
       }
-    }
-    totalCount
-  }
-  followees {
-    edges {
-      node {
-        id
-        name
-        image
-      }
-    }
-    totalCount
+export type CreateBookmarkMutationHookResult = ReturnType<typeof useCreateBookmarkMutation>;
+export type CreateBookmarkMutationResult = Apollo.MutationResult<CreateBookmarkMutation>;
+export type CreateBookmarkMutationOptions = Apollo.BaseMutationOptions<CreateBookmarkMutation, CreateBookmarkMutationVariables>;
+export const DeleteBookmarkDocument = gql`
+    mutation DeleteBookmark($nodeId: ID!) {
+  deleteBookmarkByNodeId(input: {nodeId: $nodeId}) {
+    clientMutationId
   }
 }
     `;
-export const PostsDocument = gql`
-    query Posts($first: Int = 50, $after: Cursor) {
-  posts(first: $first, after: $after, orderBy: CREATED_AT_DESC) {
+export type DeleteBookmarkMutationFn = Apollo.MutationFunction<DeleteBookmarkMutation, DeleteBookmarkMutationVariables>;
+
+/**
+ * __useDeleteBookmarkMutation__
+ *
+ * To run a mutation, you first call `useDeleteBookmarkMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteBookmarkMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteBookmarkMutation, { data, loading, error }] = useDeleteBookmarkMutation({
+ *   variables: {
+ *      nodeId: // value for 'nodeId'
+ *   },
+ * });
+ */
+export function useDeleteBookmarkMutation(baseOptions?: Apollo.MutationHookOptions<DeleteBookmarkMutation, DeleteBookmarkMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteBookmarkMutation, DeleteBookmarkMutationVariables>(DeleteBookmarkDocument, options);
+      }
+export type DeleteBookmarkMutationHookResult = ReturnType<typeof useDeleteBookmarkMutation>;
+export type DeleteBookmarkMutationResult = Apollo.MutationResult<DeleteBookmarkMutation>;
+export type DeleteBookmarkMutationOptions = Apollo.BaseMutationOptions<DeleteBookmarkMutation, DeleteBookmarkMutationVariables>;
+export const UniversitiesDocument = gql`
+    query Universities($search: String, $countryIso2: String, $orderBy: [UniversitiesOrderBy!], $first: Int = 15, $after: Cursor) {
+  universities(
+    filter: {name: {includesInsensitive: $search}, countryIso2: {equalTo: $countryIso2}}
+    orderBy: $orderBy
+    first: $first
+    after: $after
+  ) {
     edges {
       node {
-        ...PostFragment
+        ...UniversityFragment
       }
     }
     totalCount
@@ -1190,102 +1118,87 @@ export const PostsDocument = gql`
     }
   }
 }
-    ${PostFragmentFragmentDoc}`;
+    ${UniversityFragmentFragmentDoc}`;
 
 /**
- * __usePostsQuery__
+ * __useUniversitiesQuery__
  *
- * To run a query within a React component, call `usePostsQuery` and pass it any options that fit your needs.
- * When your component renders, `usePostsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useUniversitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUniversitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = usePostsQuery({
+ * const { data, loading, error } = useUniversitiesQuery({
+ *   variables: {
+ *      search: // value for 'search'
+ *      countryIso2: // value for 'countryIso2'
+ *      orderBy: // value for 'orderBy'
+ *      first: // value for 'first'
+ *      after: // value for 'after'
+ *   },
+ * });
+ */
+export function useUniversitiesQuery(baseOptions?: Apollo.QueryHookOptions<UniversitiesQuery, UniversitiesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<UniversitiesQuery, UniversitiesQueryVariables>(UniversitiesDocument, options);
+      }
+export function useUniversitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UniversitiesQuery, UniversitiesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<UniversitiesQuery, UniversitiesQueryVariables>(UniversitiesDocument, options);
+        }
+export type UniversitiesQueryHookResult = ReturnType<typeof useUniversitiesQuery>;
+export type UniversitiesLazyQueryHookResult = ReturnType<typeof useUniversitiesLazyQuery>;
+export type UniversitiesQueryResult = Apollo.QueryResult<UniversitiesQuery, UniversitiesQueryVariables>;
+export const BookmarkedUniversitiesDocument = gql`
+    query BookmarkedUniversities($first: Int = 15, $after: Cursor) {
+  bookmarks(first: $first, after: $after) {
+    edges {
+      node {
+        nodeId
+        university {
+          ...UniversityFragment
+        }
+      }
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+    ${UniversityFragmentFragmentDoc}`;
+
+/**
+ * __useBookmarkedUniversitiesQuery__
+ *
+ * To run a query within a React component, call `useBookmarkedUniversitiesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useBookmarkedUniversitiesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useBookmarkedUniversitiesQuery({
  *   variables: {
  *      first: // value for 'first'
  *      after: // value for 'after'
  *   },
  * });
  */
-export function usePostsQuery(baseOptions?: Apollo.QueryHookOptions<PostsQuery, PostsQueryVariables>) {
+export function useBookmarkedUniversitiesQuery(baseOptions?: Apollo.QueryHookOptions<BookmarkedUniversitiesQuery, BookmarkedUniversitiesQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<PostsQuery, PostsQueryVariables>(PostsDocument, options);
+        return Apollo.useQuery<BookmarkedUniversitiesQuery, BookmarkedUniversitiesQueryVariables>(BookmarkedUniversitiesDocument, options);
       }
-export function usePostsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PostsQuery, PostsQueryVariables>) {
+export function useBookmarkedUniversitiesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<BookmarkedUniversitiesQuery, BookmarkedUniversitiesQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<PostsQuery, PostsQueryVariables>(PostsDocument, options);
+          return Apollo.useLazyQuery<BookmarkedUniversitiesQuery, BookmarkedUniversitiesQueryVariables>(BookmarkedUniversitiesDocument, options);
         }
-export type PostsQueryHookResult = ReturnType<typeof usePostsQuery>;
-export type PostsLazyQueryHookResult = ReturnType<typeof usePostsLazyQuery>;
-export type PostsQueryResult = Apollo.QueryResult<PostsQuery, PostsQueryVariables>;
-export const CreatePostDocument = gql`
-    mutation CreatePost($text: String!) {
-  createPost(input: {post: {text: $text}}) {
-    post {
-      ...PostFragment
-    }
-  }
-}
-    ${PostFragmentFragmentDoc}`;
-export type CreatePostMutationFn = Apollo.MutationFunction<CreatePostMutation, CreatePostMutationVariables>;
-
-/**
- * __useCreatePostMutation__
- *
- * To run a mutation, you first call `useCreatePostMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCreatePostMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [createPostMutation, { data, loading, error }] = useCreatePostMutation({
- *   variables: {
- *      text: // value for 'text'
- *   },
- * });
- */
-export function useCreatePostMutation(baseOptions?: Apollo.MutationHookOptions<CreatePostMutation, CreatePostMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(CreatePostDocument, options);
-      }
-export type CreatePostMutationHookResult = ReturnType<typeof useCreatePostMutation>;
-export type CreatePostMutationResult = Apollo.MutationResult<CreatePostMutation>;
-export type CreatePostMutationOptions = Apollo.BaseMutationOptions<CreatePostMutation, CreatePostMutationVariables>;
-export const NewPostDocument = gql`
-    subscription NewPost {
-  listen(topic: "newPost") {
-    relatedNode {
-      ...PostFragment
-    }
-  }
-}
-    ${PostFragmentFragmentDoc}`;
-
-/**
- * __useNewPostSubscription__
- *
- * To run a query within a React component, call `useNewPostSubscription` and pass it any options that fit your needs.
- * When your component renders, `useNewPostSubscription` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useNewPostSubscription({
- *   variables: {
- *   },
- * });
- */
-export function useNewPostSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewPostSubscription, NewPostSubscriptionVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useSubscription<NewPostSubscription, NewPostSubscriptionVariables>(NewPostDocument, options);
-      }
-export type NewPostSubscriptionHookResult = ReturnType<typeof useNewPostSubscription>;
-export type NewPostSubscriptionResult = Apollo.SubscriptionResult<NewPostSubscription>;
+export type BookmarkedUniversitiesQueryHookResult = ReturnType<typeof useBookmarkedUniversitiesQuery>;
+export type BookmarkedUniversitiesLazyQueryHookResult = ReturnType<typeof useBookmarkedUniversitiesLazyQuery>;
+export type BookmarkedUniversitiesQueryResult = Apollo.QueryResult<BookmarkedUniversitiesQuery, BookmarkedUniversitiesQueryVariables>;
 export const CurrentUserDocument = gql`
     query CurrentUser {
   currentUser {
@@ -1320,40 +1233,6 @@ export function useCurrentUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type CurrentUserQueryHookResult = ReturnType<typeof useCurrentUserQuery>;
 export type CurrentUserLazyQueryHookResult = ReturnType<typeof useCurrentUserLazyQuery>;
 export type CurrentUserQueryResult = Apollo.QueryResult<CurrentUserQuery, CurrentUserQueryVariables>;
-export const MyFollowingsDocument = gql`
-    query MyFollowings {
-  currentUser {
-    ...FollowingFragment
-  }
-}
-    ${FollowingFragmentFragmentDoc}`;
-
-/**
- * __useMyFollowingsQuery__
- *
- * To run a query within a React component, call `useMyFollowingsQuery` and pass it any options that fit your needs.
- * When your component renders, `useMyFollowingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMyFollowingsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMyFollowingsQuery(baseOptions?: Apollo.QueryHookOptions<MyFollowingsQuery, MyFollowingsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<MyFollowingsQuery, MyFollowingsQueryVariables>(MyFollowingsDocument, options);
-      }
-export function useMyFollowingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyFollowingsQuery, MyFollowingsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<MyFollowingsQuery, MyFollowingsQueryVariables>(MyFollowingsDocument, options);
-        }
-export type MyFollowingsQueryHookResult = ReturnType<typeof useMyFollowingsQuery>;
-export type MyFollowingsLazyQueryHookResult = ReturnType<typeof useMyFollowingsLazyQuery>;
-export type MyFollowingsQueryResult = Apollo.QueryResult<MyFollowingsQuery, MyFollowingsQueryVariables>;
 export const UserDocument = gql`
     query User($id: UUID!) {
   user(id: $id) {
@@ -1389,141 +1268,3 @@ export function useUserLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserQ
 export type UserQueryHookResult = ReturnType<typeof useUserQuery>;
 export type UserLazyQueryHookResult = ReturnType<typeof useUserLazyQuery>;
 export type UserQueryResult = Apollo.QueryResult<UserQuery, UserQueryVariables>;
-export const UserFollowingsDocument = gql`
-    query UserFollowings($id: UUID!) {
-  user(id: $id) {
-    ...FollowingFragment
-  }
-}
-    ${FollowingFragmentFragmentDoc}`;
-
-/**
- * __useUserFollowingsQuery__
- *
- * To run a query within a React component, call `useUserFollowingsQuery` and pass it any options that fit your needs.
- * When your component renders, `useUserFollowingsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useUserFollowingsQuery({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useUserFollowingsQuery(baseOptions: Apollo.QueryHookOptions<UserFollowingsQuery, UserFollowingsQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<UserFollowingsQuery, UserFollowingsQueryVariables>(UserFollowingsDocument, options);
-      }
-export function useUserFollowingsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserFollowingsQuery, UserFollowingsQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<UserFollowingsQuery, UserFollowingsQueryVariables>(UserFollowingsDocument, options);
-        }
-export type UserFollowingsQueryHookResult = ReturnType<typeof useUserFollowingsQuery>;
-export type UserFollowingsLazyQueryHookResult = ReturnType<typeof useUserFollowingsLazyQuery>;
-export type UserFollowingsQueryResult = Apollo.QueryResult<UserFollowingsQuery, UserFollowingsQueryVariables>;
-export const IsFollowingDocument = gql`
-    query IsFollowing($followeeId: UUID!, $followerId: UUID!) {
-  following(followeeId: $followeeId, followerId: $followerId) {
-    followeeId
-  }
-}
-    `;
-
-/**
- * __useIsFollowingQuery__
- *
- * To run a query within a React component, call `useIsFollowingQuery` and pass it any options that fit your needs.
- * When your component renders, `useIsFollowingQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useIsFollowingQuery({
- *   variables: {
- *      followeeId: // value for 'followeeId'
- *      followerId: // value for 'followerId'
- *   },
- * });
- */
-export function useIsFollowingQuery(baseOptions: Apollo.QueryHookOptions<IsFollowingQuery, IsFollowingQueryVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<IsFollowingQuery, IsFollowingQueryVariables>(IsFollowingDocument, options);
-      }
-export function useIsFollowingLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IsFollowingQuery, IsFollowingQueryVariables>) {
-          const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<IsFollowingQuery, IsFollowingQueryVariables>(IsFollowingDocument, options);
-        }
-export type IsFollowingQueryHookResult = ReturnType<typeof useIsFollowingQuery>;
-export type IsFollowingLazyQueryHookResult = ReturnType<typeof useIsFollowingLazyQuery>;
-export type IsFollowingQueryResult = Apollo.QueryResult<IsFollowingQuery, IsFollowingQueryVariables>;
-export const FollowDocument = gql`
-    mutation Follow($followeeId: UUID!) {
-  createFollowing(input: {following: {followeeId: $followeeId}}) {
-    clientMutationId
-  }
-}
-    `;
-export type FollowMutationFn = Apollo.MutationFunction<FollowMutation, FollowMutationVariables>;
-
-/**
- * __useFollowMutation__
- *
- * To run a mutation, you first call `useFollowMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useFollowMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [followMutation, { data, loading, error }] = useFollowMutation({
- *   variables: {
- *      followeeId: // value for 'followeeId'
- *   },
- * });
- */
-export function useFollowMutation(baseOptions?: Apollo.MutationHookOptions<FollowMutation, FollowMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<FollowMutation, FollowMutationVariables>(FollowDocument, options);
-      }
-export type FollowMutationHookResult = ReturnType<typeof useFollowMutation>;
-export type FollowMutationResult = Apollo.MutationResult<FollowMutation>;
-export type FollowMutationOptions = Apollo.BaseMutationOptions<FollowMutation, FollowMutationVariables>;
-export const UnFollowDocument = gql`
-    mutation UnFollow($followeeId: UUID!, $followerId: UUID!) {
-  deleteFollowing(input: {followerId: $followerId, followeeId: $followeeId}) {
-    clientMutationId
-  }
-}
-    `;
-export type UnFollowMutationFn = Apollo.MutationFunction<UnFollowMutation, UnFollowMutationVariables>;
-
-/**
- * __useUnFollowMutation__
- *
- * To run a mutation, you first call `useUnFollowMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUnFollowMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [unFollowMutation, { data, loading, error }] = useUnFollowMutation({
- *   variables: {
- *      followeeId: // value for 'followeeId'
- *      followerId: // value for 'followerId'
- *   },
- * });
- */
-export function useUnFollowMutation(baseOptions?: Apollo.MutationHookOptions<UnFollowMutation, UnFollowMutationVariables>) {
-        const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UnFollowMutation, UnFollowMutationVariables>(UnFollowDocument, options);
-      }
-export type UnFollowMutationHookResult = ReturnType<typeof useUnFollowMutation>;
-export type UnFollowMutationResult = Apollo.MutationResult<UnFollowMutation>;
-export type UnFollowMutationOptions = Apollo.BaseMutationOptions<UnFollowMutation, UnFollowMutationVariables>;

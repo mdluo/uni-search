@@ -1,0 +1,11 @@
+mutation CreateBookmark($universityId: UUID!) {
+  createBookmark(input: { bookmark: { universityId: $universityId } }) {
+    clientMutationId
+  }
+}
+
+mutation DeleteBookmark($nodeId: ID!) {
+  deleteBookmarkByNodeId(input: {nodeId: $nodeId}) {
+    clientMutationId
+  }
+}

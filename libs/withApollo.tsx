@@ -141,7 +141,8 @@ export const withApollo = withApolloBase(
           Query: {
             queryType: true,
             fields: {
-              posts: relayStylePagination(),
+              universities: relayStylePagination(),
+              bookmarks: relayStylePagination(),
             },
           },
         },

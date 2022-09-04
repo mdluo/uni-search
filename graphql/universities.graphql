@@ -1,0 +1,58 @@
+fragment UniversityFragment on University {
+  id
+  name
+  details
+  createdAt
+  bookmarks {
+    nodes {
+      nodeId
+    }
+  }
+}
+
+query Universities(
+  $search: String
+  $countryIso2: String
+  $orderBy: [UniversitiesOrderBy!]
+  $first: Int = 15
+  $after: Cursor
+) {
+  universities(
+    filter: {
+      name: { includesInsensitive: $search }
+      countryIso2: { equalTo: $countryIso2 }
+    }
+    orderBy: $orderBy
+    first: $first
+    after: $after
+  ) {
+    edges {
+      node {
+        ...UniversityFragment
+      }
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}
+
+query BookmarkedUniversities($first: Int = 15, $after: Cursor) {
+  bookmarks(first: $first, after: $after) {
+    edges {
+      node {
+        nodeId
+        university {
+          ...UniversityFragment
+        }
+      }
+    }
+    totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+}

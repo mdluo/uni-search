@@ -1,6 +1,9 @@
 import NextAuth from 'next-auth';
 import type { DefaultJWT } from 'next-auth/jwt';
 import type { DefaultSession } from 'next-auth';
+import SequelizeAdapter from '@next-auth/sequelize-adapter';
+import { Sequelize } from 'sequelize';
+import EmailProvider from 'next-auth/providers/email';
 import GithubProvider from 'next-auth/providers/github';
 import GoogleProvider from 'next-auth/providers/google';
 
@@ -16,12 +19,33 @@ export interface Session extends DefaultSession {
   };
 }
 
+const sequelize = new Sequelize('sqlite::memory:');
+const adapter = SequelizeAdapter(sequelize);
+
+// Calling sync() is not recommended in production
+sequelize.sync();
+
 export default NextAuth({
+  adapter,
+  session: {
+    strategy: 'jwt',
+  },
   // Configure one or more authentication providers
   providers: [
+    EmailProvider({
+      server: {
+        host: process.env.EMAIL_SERVER_HOST,
+        port: process.env.EMAIL_SERVER_PORT,
+        auth: {
+          user: process.env.EMAIL_SERVER_USER,
+          pass: process.env.EMAIL_SERVER_PASSWORD,
+        },
+      },
+      from: process.env.EMAIL_FROM,
+    }),
     GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: process.env.GITHUB_ID ?? '',
+      clientSecret: process.env.GITHUB_SECRET ?? '',
     }),
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID ?? '',
@@ -30,6 +54,7 @@ export default NextAuth({
     // ...add more providers here
   ],
   theme: {
+    logo: '/favicon.svg',
     colorScheme: 'light',
   },
   callbacks: {
@@ -49,7 +74,10 @@ export default NextAuth({
           token.userId,
           provider,
           providerAccountId,
-          userDetails,
+          {
+            ...userDetails,
+            name: provider === 'email' ? providerAccountId : userDetails?.name,
+          },
           accountDetails,
         ],
       );

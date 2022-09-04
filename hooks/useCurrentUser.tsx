@@ -8,7 +8,7 @@ export const UserContextProvider: React.FC<{ children?: ReactNode }> = ({
   children,
 }) => {
   const { data: session } = useSession({
-    required: true,
+    required: false,
     onUnauthenticated: signIn,
   });
 
@@ -21,10 +21,6 @@ export const UserContextProvider: React.FC<{ children?: ReactNode }> = ({
       signIn();
     }
   }, [currentUser, currentUserQuery.loading, session]);
-
-  if (!currentUser) {
-    return null;
-  }
 
   return (
     <UserContext.Provider value={currentUser as User}>

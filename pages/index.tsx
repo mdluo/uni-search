@@ -1,66 +1,146 @@
-import { useSession, signIn } from 'next-auth/react';
-import { merge } from 'lodash';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import debounce from 'lodash/debounce';
+import Head from 'next/head';
+import { Button, Toaster, NonIdealState } from '@blueprintjs/core';
+import {
+  University as UniversityType,
+  UniversitiesOrderBy,
+  useUniversitiesQuery,
+  useCreateBookmarkMutation,
+  useDeleteBookmarkMutation,
+} from 'graphql/generated';
 
 import Nav from 'components/nav';
-import Aside from 'components/aside';
-import Composer from 'components/composer';
-import Post from 'components/post';
-import { usePostsQuery, useNewPostSubscription } from 'graphql/generated';
+import Search from 'components/search';
+import type { Country } from 'components/country-select/CountrySelect';
+import Sort from 'components/sort';
+import University from 'components/university';
 
 const Index: React.FC = () => {
-  useSession({
-    required: true,
-    onUnauthenticated: signIn,
-  });
+  const [search, setSearch] = useState('');
+  const [country, setCountry] = useState<Country | undefined>();
+  const [orderBy, setOrderBy] = useState<UniversitiesOrderBy>(
+    UniversitiesOrderBy.NameAsc,
+  );
 
-  const { data, loading, fetchMore, updateQuery } = usePostsQuery({
-    variables: { first: 10 },
-  });
-
-  useNewPostSubscription({
-    onSubscriptionData: ({ subscriptionData }) => {
-      const relatedNode = subscriptionData.data?.listen.relatedNode;
-      if (relatedNode?.__typename === 'Post') {
-        const newPost = relatedNode;
-        updateQuery((prev) => {
-          if (prev.posts?.edges.find((edge) => edge.node.id === newPost.id)) {
-            return prev;
-          }
-          return merge({}, prev, {
-            posts: {
-              totalCount: prev.posts?.totalCount ?? 0 + 1,
-              edges: [{ node: newPost }, ...(prev.posts?.edges ?? [])],
-            },
-          });
-        });
-      }
+  const { data, loading, fetchMore, refetch } = useUniversitiesQuery({
+    variables: {
+      search,
+      countryIso2: country?.iso2 || null,
+      orderBy,
     },
   });
 
+  const debouncedRefetch = useCallback(
+    debounce(refetch, 300, { leading: true }),
+    [],
+  );
+
+  useEffect(() => {
+    debouncedRefetch();
+  }, [search, country, orderBy, refetch]);
+
+  const [createBookmark] = useCreateBookmarkMutation({
+    refetchQueries: ['Universities'],
+  });
+  const [deleteBookmark] = useDeleteBookmarkMutation({
+    refetchQueries: ['Universities'],
+  });
+
+  const toaster = useRef<Toaster>(null);
+
   return (
     <>
-      <style>{`button { border: none; cursor: pointer; }`}</style>
+      <Head>
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <title>Uni Search</title>
+      </Head>
       <Nav />
-      <div className="container grid grid-cols-1 gap-6 py-6 px-2 mx-auto lg:grid-cols-3">
-        <Aside />
-        <main className="col-span-2">
-          <Composer />
-          {data?.posts?.edges?.map(({ node }) => (
-            <Post key={node.id} post={node} />
-          ))}
-          {data?.posts?.pageInfo.hasNextPage && !loading && (
-            <button
-              className="py-2 w-full text-white bg-blue-400 hover:bg-blue-500 rounded-md transition duration-300 ease-out cursor-pointer"
-              onClick={() =>
+      <Toaster ref={toaster} />
+      <div className="container mx-auto max-w-3xl px-3">
+        <main className="flex flex-col gap-3 py-6">
+          <Search
+            {...{ loading, country, setCountry }}
+            value={search}
+            onChange={setSearch}
+          />
+
+          <div className="flex items-center">
+            <span className="flex-1 text-[15px]">
+              Showing {data?.universities?.edges.length}, Total:{' '}
+              {data?.universities?.totalCount}
+            </span>
+
+            <Sort
+              showCountry={!country}
+              value={orderBy}
+              onChange={setOrderBy}
+            />
+          </div>
+
+          {!loading && data?.universities?.edges.length === 0 && (
+            <NonIdealState
+              className="my-16"
+              icon="search"
+              title="No search results"
+              description="Your search didn't match any universities. Try searching for something else."
+            />
+          )}
+
+          {(data?.universities?.edges.length ?? 0) > 0 && (
+            <ul className="m-0 flex list-none flex-col gap-3 p-0">
+              {data?.universities?.edges.map(({ node }) => (
+                <University
+                  key={node.id}
+                  node={node as UniversityType}
+                  onCreateBookmark={(universityId) => {
+                    createBookmark({
+                      variables: { universityId },
+                      onCompleted: () => {
+                        toaster.current?.show({
+                          intent: 'success',
+                          icon: 'bookmark',
+                          message: 'Bookmarked',
+                          action: {
+                            href: '/bookmarks',
+                            text: 'View all',
+                          },
+                        });
+                      },
+                    });
+                  }}
+                  onDeleteBookmark={(nodeId) => {
+                    deleteBookmark({
+                      variables: { nodeId },
+                      onCompleted: () => {
+                        toaster.current?.show({
+                          intent: 'primary',
+                          icon: 'bookmark',
+                          message: 'Bookmark removed',
+                        });
+                      },
+                    });
+                  }}
+                />
+              ))}
+            </ul>
+          )}
+
+          {!loading && data?.universities?.pageInfo.hasNextPage && (
+            <Button
+              fill
+              minimal
+              icon="double-chevron-down"
+              onClick={() => {
                 fetchMore({
                   variables: {
-                    after: data.posts?.pageInfo.endCursor,
+                    after: data.universities?.pageInfo.endCursor,
                   },
-                })
-              }
+                });
+              }}
             >
-              Load more
-            </button>
+              Show more
+            </Button>
           )}
         </main>
       </div>

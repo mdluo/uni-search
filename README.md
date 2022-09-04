@@ -1,4 +1,4 @@
-# Graphile Next Example
+# Uni Search
 
 Preview: https://graphile-next-example.mdluo.com (Note: this preview app (together with the PostgreSQL server) is running on a [free-tier e2-micro](https://cloud.google.com/free/docs/gcp-free-tier/#compute) GCE VM, and it can get fairly slow due to the limited CPU and memory resources).
 
@@ -11,17 +11,16 @@ This app is inspired by [Graphile Starter](https://github.com/graphile/starter),
 
 ### Features
 
-- Log in (and sign up) with GitHub and Google accounts.
+- Log in (and sign up) with Email, GitHub and Google accounts.
 - Cookie-based JWT tokens for user identification.
 - Cursor-based pagination ([Relay style](https://www.apollographql.com/docs/react/pagination/cursor-based/#relay-style-cursor-pagination)).
-- PostgreSQL triggers and GraphQL subscription (realtime updates).
-- Twitter-like user follow functionality.
 
 ### Local development
 
 Requirements:
 
 - [GitHub OAuth App](https://www.apollographql.com/docs/react/pagination/cursor-based/#relay-style-cursor-pagination) and/or [Google OAuth 2.0 Client ID](https://support.google.com/cloud/answer/6158849?hl=en)
+- SMTP account, [Gmail](https://support.google.com/a/answer/176600?hl=en) or [SendGrid](https://sendgrid.com/).
 - Docker machine and docker-compose (for running PostgreSQL, optional if you installed PostgreSQL natively).
 - Node.js (recommend >= 16) and npm (recommend >= 8) or yarn.
 
@@ -50,6 +49,7 @@ And edit the `.env` file to ensure all the missing variables are set. Tip: you c
 ```sh
 npm run db:init
 npm run db:migrate
+npm run db:seed
 ```
 
 ##### Step 5. (You can stop the `npm run db:migrate` once finished) Start the local development server
