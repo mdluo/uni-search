@@ -109,6 +109,8 @@ This is to watch any schema changes on the server side, as well as graphql code 
 
 ### Improvement items
 
+- [ ] Fix the stale data issue when switching the pages.
+- [ ] Fine-tune the styles and UX on mobile browsers.
 - [ ] Add more actual unit test cases to improve the coverage rate.
 - [ ] Create [custom NextAuth adapter](https://next-auth.js.org/tutorials/creating-a-database-adapter) to use Postgres database to store the email verification token, and get rid of the in-memory SQLite adapter.
 - [ ] Add [Virtuoso](https://virtuoso.dev/) to the result list to make it virtualised.
