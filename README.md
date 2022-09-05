@@ -112,6 +112,7 @@ This is to watch any schema changes on the server side, as well as graphql code 
 - [ ] Add more actual unit test cases to improve the coverage rate.
 - [ ] Create [custom NextAuth adapter](https://next-auth.js.org/tutorials/creating-a-database-adapter) to use Postgres database to store the email verification token, and get rid of the in-memory SQLite adapter.
 - [ ] Add [Virtuoso](https://virtuoso.dev/) to the result list to make it virtualised.
+- [ ] Add code-splitting to some of the larger components, and apply tree-shaking to the BlueprintJS components.
 - [ ] Fix the `loading` state returned by ApolloClient hooks not working issue.
 - [ ] Add GiST index to the universities table to optimise the text search speed: https://alexklibisz.com/2022/02/18/optimizing-postgres-trigram-search.html, as well as sort the result by match ranking.
 - [ ] Add an extra tsvector column the universities table for full text search to work together with the current fuzzy search.
