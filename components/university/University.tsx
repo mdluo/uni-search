@@ -6,9 +6,7 @@ import { Tooltip2 } from '@blueprintjs/popover2';
 import useCurrentUser from 'hooks/useCurrentUser';
 import Avatar from 'components/avatar';
 import { getFlagEmoji } from 'libs/emoji';
-import {
-  University as UniversityType,
-} from 'graphql/generated';
+import { University as UniversityType } from 'graphql/generated';
 
 interface Props {
   node: UniversityType;
@@ -28,14 +26,16 @@ export default function University({
       key={id}
       className="group flex items-center gap-3 rounded bg-white px-4 py-3 shadow-sm hover:shadow-md"
     >
-      <Avatar size={32} details={details} />
+      <div className="min-w-[32px]">
+        <Avatar size={32} details={details} />
+      </div>
       <div className="flex flex-1 flex-col gap-1">
-        <span className="text-base text-slate-800 font-semibold">
+        <span className="text-base font-semibold text-slate-800">
           {details.name}
         </span>
-        <div className="inline-flex gap-3">
-          <span className="text-slate-600">
-            <span className="align-middle mr-1">
+        <span className="break-words">
+          <span className="mr-3 whitespace-nowrap text-slate-600">
+            <span className="mr-1 align-middle">
               {getFlagEmoji(details.alpha_two_code)}
             </span>
             {[details['state-province'], details.country]
@@ -43,11 +43,16 @@ export default function University({
               .join(', ')}
           </span>
 
-          <a href={details.web_pages[0]} target="_blank" rel="noreferrer">
-            <Icon className="align-middle mr-1" size={12} icon="link" />
+          <a
+            className="whitespace-nowrap"
+            href={details.web_pages[0]}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <Icon className="mr-1 align-middle" size={12} icon="link" />
             <span>{new URL(details.web_pages[0]).hostname}</span>
           </a>
-        </div>
+        </span>
       </div>
       <Tooltip2
         content={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}

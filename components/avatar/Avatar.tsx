@@ -26,13 +26,14 @@ function Avatar({
       .join('');
     urls.push(`https://avatar.tobi.sh/${name}.svg?text=${initial}`);
     return urls;
-  }, []);
+  }, [domains, name, size, web_pages]);
 
   const [index, setIndex] = useState(0);
 
   return (
     <NextImage
       className="rounded-md"
+      style={{ width: size, height: size }}
       alt="Logo"
       width={size}
       height={size}

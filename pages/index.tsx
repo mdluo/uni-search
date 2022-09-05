@@ -38,10 +38,10 @@ const Index: React.FC = () => {
   }, [search, country, orderBy, refetch]);
 
   const [createBookmark] = useCreateBookmarkMutation({
-    refetchQueries: ['Universities'],
+    refetchQueries: ['Universities', 'BookmarkedUniversities'],
   });
   const [deleteBookmark] = useDeleteBookmarkMutation({
-    refetchQueries: ['Universities'],
+    refetchQueries: ['Universities', 'BookmarkedUniversities'],
   });
 
   const toaster = useRef<Toaster>(null);

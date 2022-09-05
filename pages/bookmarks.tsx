@@ -18,7 +18,7 @@ const Bookmarks: React.FC = () => {
   const { data, loading, fetchMore } = useBookmarkedUniversitiesQuery();
 
   const [deleteBookmark] = useDeleteBookmarkMutation({
-    refetchQueries: ['BookmarkedUniversities'],
+    refetchQueries: ['Universities', 'BookmarkedUniversities'],
   });
 
   const toaster = useRef<Toaster>(null);
