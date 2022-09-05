@@ -31,10 +31,7 @@ const Index: React.FC = () => {
     },
   });
 
-  const debouncedRefetch = useCallback(
-    debounce(refetch, 300, { leading: true }),
-    [],
-  );
+  const debouncedRefetch = useCallback(debounce(refetch, 300), []);
 
   useEffect(() => {
     debouncedRefetch();

@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import NextImage from 'next/image';
 import { signIn, signOut } from 'next-auth/react';
 import { Menu, MenuDivider, Icon, Button } from '@blueprintjs/core';
 import { Popover2, MenuItem2 } from '@blueprintjs/popover2';
@@ -11,17 +12,17 @@ const Nav: React.FC = () => {
 
   return (
     <nav className="bg-white shadow">
-      <div className="container flex relative justify-between items-center mx-auto max-w-3xl px-3 h-16">
+      <div className="container relative mx-auto flex h-16 max-w-3xl items-center justify-between px-3">
         <div className="inline-flex">
           <Link href="/">
-            <a className="text-lg flex items-center gap-[6px] hover:no-underline hover:text-sky-600">
+            <a className="flex items-center gap-[6px] text-lg hover:text-sky-600 hover:no-underline">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
                 strokeWidth={2}
                 stroke="currentColor"
-                className="w-6 h-6"
+                className="h-6 w-6"
               >
                 <path
                   strokeLinecap="round"
@@ -34,16 +35,16 @@ const Nav: React.FC = () => {
           </Link>
         </div>
         <div className="flex-initial">
-          <div className="flex relative justify-end items-center gap-4 ">
+          <div className="relative flex items-center justify-end gap-4 ">
             {user ? (
               <Link href="/bookmarks">
-                <a className="hover:no-underline hover:text-sky-600">
+                <a className="hover:text-sky-600 hover:no-underline">
                   Bookmarks
                 </a>
               </Link>
             ) : (
               <a
-                className="hover:no-underline hover:text-sky-600"
+                className="hover:text-sky-600 hover:no-underline"
                 onClick={() => signIn()}
               >
                 Sign in
@@ -51,7 +52,7 @@ const Nav: React.FC = () => {
             )}
             {user && (
               <div className="block">
-                <div className="inline relative">
+                <div className="relative inline">
                   <Popover2
                     autoFocus
                     canEscapeKeyClose
@@ -69,11 +70,11 @@ const Nav: React.FC = () => {
                       </Menu>
                     }
                   >
-                    <Button minimal className="py-2 px-3 rounded-full border">
+                    <Button minimal className="rounded-full border py-2 px-3">
                       <span className="flex items-center gap-4">
                         <Icon icon="menu" size={20} />
                         {user.image ? (
-                          <img
+                          <NextImage
                             className="rounded-full"
                             width={24}
                             height={24}

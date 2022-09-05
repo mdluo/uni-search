@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "graphile-next-example",
+  "name": "uni-search",
   "version": "1.0.0",
   "scripts": {
     "gm": "graphile-migrate",
