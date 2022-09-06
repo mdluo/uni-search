@@ -33,18 +33,23 @@ export default function University({
         <span className="text-base font-semibold text-slate-800">
           {details.name}
         </span>
-        <span className="break-words">
-          <span className="mr-3 whitespace-nowrap text-slate-600">
+        <div className="flex flex-wrap">
+          <span
+            className="mr-3 text-slate-600"
+            style={{ whiteSpace: 'break-spaces' }}
+          >
             <span className="mr-1 align-middle">
               {getFlagEmoji(details.alpha_two_code)}
             </span>
-            {[details['state-province'], details.country]
-              .filter((t) => !!t)
-              .join(', ')}
+            <span>
+              {[details['state-province'], details.country]
+                .filter((t) => !!t)
+                .join(', ')}
+            </span>
           </span>
 
           <a
-            className="whitespace-nowrap"
+            className="break-all"
             href={details.web_pages[0]}
             target="_blank"
             rel="noreferrer"
@@ -52,7 +57,7 @@ export default function University({
             <Icon className="mr-1 align-middle" size={12} icon="link" />
             <span>{new URL(details.web_pages[0]).hostname}</span>
           </a>
-        </span>
+        </div>
       </div>
       <Tooltip2
         content={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}

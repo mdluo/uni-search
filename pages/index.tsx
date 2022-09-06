@@ -25,7 +25,7 @@ const Index: React.FC = () => {
 
   const { data, loading, fetchMore, refetch } = useUniversitiesQuery({
     variables: {
-      search,
+      search: search.trim(),
       countryIso2: country?.iso2 || null,
       orderBy,
     },
